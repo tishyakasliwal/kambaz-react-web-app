@@ -72,10 +72,12 @@ export default function QuizPreviewStudent() {
           .map((c: string) => c.toLowerCase())
           .includes(String(sel).toLowerCase());
       }
-      return { question: q._id, selectedAnswer: sel, correct };
+      return { question: q._id, selectedAnswer: sel, correct, points: q.points };
     });
 
-    const score = payloadAnswers.filter((a) => a.correct).length;
+    const score = payloadAnswers
+    .filter((a) => a.correct)
+    .reduce((total, a) => total + a.points, 0);
 
     try {
       await submitQuizAttempt(quizId, {
